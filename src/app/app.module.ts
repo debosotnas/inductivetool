@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TextPortionComponent } from './text-portion/text-portion.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TextSelectionDirective } from './text-selection/text-selection.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TextPortionComponent
+    TextPortionComponent,
+    TextSelectionDirective
   ],
   imports: [
     BrowserModule,

@@ -31,3 +31,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 Bootstrap
 https://loiane.com/2017/08/how-to-add-bootstrap-to-an-angular-cli-project/
 
+Next checks/steps:
+
+getSelection https://medium.com/@propagandra/window-getselection-and-range-in-javascript-5a13453d22
+https://codepen.io/pen/?editors=1010#0
+.surroundContents(element)
+
