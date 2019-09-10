@@ -27,6 +27,7 @@ import { NgZone } from '@angular/core';
 
 export interface TextSelectEvent {
   text: string;
+  rangeSelection: Range | null;
   viewportRectangle: SelectionRectangle | null;
   hostRectangle: SelectionRectangle | null;
 }
@@ -40,14 +41,10 @@ interface SelectionRectangle {
 
 @Directive({
   selector: '[appTextSelection]',
-  // outputs: ['textSelectEvent: textSelect']
-  // outputs: ['textSelectEvent']
 })
 export class TextSelectionDirective implements OnInit, OnDestroy {
-  // @Output textSelectEvent: Event;
 
   @Output() public textSelectEvent: EventEmitter<TextSelectEvent>;
-  // textSelectEvent: EventEmitter<TextSelectEvent>;
 
   private elementRef: ElementRef;
   private hasSelection: boolean;
@@ -180,6 +177,7 @@ export class TextSelectionDirective implements OnInit, OnDestroy {
         this.hasSelection = false;
         this.textSelectEvent.next({
           text: '',
+          rangeSelection: null,
           viewportRectangle: null,
           hostRectangle: null
         });
@@ -192,7 +190,7 @@ export class TextSelectionDirective implements OnInit, OnDestroy {
       return;
     }
 
-    const range = selection.getRangeAt(0);
+    const range: Range = selection.getRangeAt(0);
     const rangeContainer = this.getRangeContainer(range);
 
     // We only want to emit events for selections that are fully contained within the
@@ -214,6 +212,7 @@ export class TextSelectionDirective implements OnInit, OnDestroy {
         this.hasSelection = true;
         this.textSelectEvent.emit({
           text: selection.toString(),
+          rangeSelection: range,
           viewportRectangle: {
             left: viewportRectangle.left,
             top: viewportRectangle.top,
@@ -229,6 +228,8 @@ export class TextSelectionDirective implements OnInit, OnDestroy {
         });
       });
 
+    } else {
+      console.log('>> Remove Selection!!');
     }
   }
 
