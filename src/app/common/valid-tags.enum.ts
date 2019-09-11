@@ -17,3 +17,23 @@ export enum ValidTagsEnum {
   HightlightF = 'hightlight-f',
   HightlightG = 'hightlight-g',
 }
+
+export enum TagNamesEnum {
+  Hightlight0 = 'Contraste',
+  Hightlight1 = 'Dios',
+  Hightlight2 = 'Jesucristo',
+  Hightlight3 = 'Pregunta',
+  Hightlight4 = 'Personas',
+  Hightlight5 = 'Destinatarios',
+  Hightlight6 = 'Lugares',
+  Hightlight7 = 'Tiempo',
+  Hightlight8 = 'Palabra Clave',
+  Hightlight9 = 'Palabra repetida',
+  HightlightA = 'Propósito',
+  HightlightB = 'Razón',
+  HightlightC = 'Razón',
+  HightlightD = 'Conclusión',
+  HightlightE = 'Verbo pasivo',
+  HightlightF = 'Verbo activo',
+  HightlightG = 'Causa-efecto',
+}

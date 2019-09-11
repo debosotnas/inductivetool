@@ -4,6 +4,7 @@ import { ValidTagsEnum } from '../common/valid-tags.enum';
 import { testPortion, HIGHLIGHT_COMMON_CLASS } from '../common/constants';
 import { EventEmitter } from '@angular/core';
 import { ShowListEvent } from '../common/common.types';
+import { TextHelperService } from '../text-helper.service';
 
 const CLASS_CSS_PREFIX = 'hightlight-';
 
@@ -23,9 +24,14 @@ export class TextPortionComponent implements OnInit {
   @Input() fontSizeSelected: number;
   @Output() getTextPortion: EventEmitter<ShowListEvent>;
 
+  @Input() hightlightList = {};
+
   currentRangeSelection: Range;
   textPortion: string;
   words: string[];
+
+  objectKeys = Object.keys;
+  getTagName = TextHelperService.getTagName;
 
   @HostBinding('attr.tabIndex') tabIndex = -1;
 
@@ -42,12 +48,36 @@ export class TextPortionComponent implements OnInit {
     this.words = this.textPortion.split(' ');
   }
 
+  showItemList(itemId: string): void {
+    const elem = document.querySelector('#' + itemId);
+    elem.classList.add('over-state');
+  }
+
+  showAllItemList(arrItems: any[]): void {
+    arrItems.map((item) => this.showItemList(item.id));
+  }
+
+  normalItemList(itemId: string): void {
+    const elem = document.querySelector('#' + itemId);
+    elem.classList.remove('over-state');
+  }
+
+  normalAllItemList(arrItems: any[]): void {
+    arrItems.map((item) => this.normalItemList(item.id));
+  }
+
   emitShowLists(): void {
     const blockPortionItem: HTMLElement = document.querySelector('.block-portion');
     const textPortionModified: string = blockPortionItem.innerHTML;
+
+    this.hightlightList = TextHelperService.getHighLightList(textPortionModified);
+
+    // console.log('>>' + hightlightList);
+    /*
     this.getTextPortion.emit({
       text: textPortionModified
     });
+    */
   }
 
   tagAs(typeOfTag: any): void {

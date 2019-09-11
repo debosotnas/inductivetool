@@ -1,6 +1,7 @@
 import { Component, Renderer2, OnInit } from '@angular/core';
 import { ShowListEvent, HighlightItem } from './common/common.types';
 import { HIGHLIGHT_COMMON_CLASS } from './common/constants';
+import { TextHelperService } from './text-helper.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,7 @@ import { HIGHLIGHT_COMMON_CLASS } from './common/constants';
 })
 export class AppComponent implements OnInit {
 
+  hightlightList = {};
   showListContainer = false;
   showHighlightContainer = true;
 
@@ -32,38 +34,9 @@ export class AppComponent implements OnInit {
   }
 
   showCurrentLists(event: ShowListEvent) {
-    const hightlightList: any[] = this.getHighLightList(event.text);
-    console.log(hightlightList);
-  }
-
-  getHighLightList(htmlPortion: string): any[] {
-    // const partitions: Array<Array<HighlightItem>>[] = [];
-    const partitions: Array<any>[] = [];
-
-    const div: HTMLDivElement = document.createElement('div');
-    div.innerHTML = htmlPortion;
-    const highlightItems = div.querySelectorAll('.' + HIGHLIGHT_COMMON_CLASS);
-    highlightItems.forEach((item: any) => {
-      const partitionKey: string = item.classList[0];
-      const currentPartition: HighlightItem[] = partitions[partitionKey];
-      if (Array.isArray(currentPartition)) {
-        currentPartition.push({
-          content: item.innerText,
-          type: partitionKey,
-          item,
-          id: item.id
-        });
-        partitions[partitionKey] = currentPartition;
-      } else {
-        partitions[partitionKey] = [{
-            content: item.innerText,
-            type: partitionKey,
-            item,
-            id: item.id
-          }];
-      }
-    });
-    return partitions;
+    this.hightlightList = TextHelperService.getHighLightList(event.text);
+    // console.log(hightlightList);
+    // TODO
   }
 
   fontUp(): void {

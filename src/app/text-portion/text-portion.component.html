@@ -18,8 +18,8 @@
       <button (click)="tagAs('6')">Lugares (6)</button>
       <button (click)="tagAs('7')">Tiempo (7)</button>
       <button (click)="tagAs('8')">Palabra Clave (8)</button>
-      <button (click)="tagAs('9')">Palabras Repetidas (9)</button>
-      <button (click)="tagAs('0')">Contrastes (0)</button>
+      <button (click)="tagAs('9')">Palabra Repetida (9)</button>
+      <button (click)="tagAs('0')">Contraste (0)</button>
       <button (click)="tagAs('a')">Propósito (a)</button>
       <button (click)="tagAs('b')">Razón - Rect (b)</button>
       <button (click)="tagAs('c')">Razón - Circle (c)</button>
@@ -29,7 +29,18 @@
       <button (click)="tagAs('g')">Causa efecto (g)</button>
     </div>
     <div *ngIf="showListContainer" class="col-4 list-container">
-      Info
+      <ul><li *ngFor="let key of objectKeys(hightlightList)" class="partition-list">
+        <span
+          class="partition-item-title"
+          (mouseover)="showAllItemList(hightlightList[key])" 
+          (mouseout)="normalAllItemList(hightlightList[key])">
+          Lista "{{getTagName(key)}}"</span>
+          - Palabras: <span *ngFor="let item of hightlightList[key]" 
+            (mouseover)="showItemList(item.id)" 
+            (mouseout)="normalItemList(item.id)">
+              {{item.content}}
+          </span>
+        </li></ul>
     </div>
   </div>
 </div>
