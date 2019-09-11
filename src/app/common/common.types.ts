@@ -15,3 +15,10 @@ export interface HighlightItem {
   item: any;
   id: string;
 }
+
+export interface State {
+  buttonHighlight: boolean;
+  buttonPanel: boolean;
+  fontSize: number;
+  textPortion: string;
+}

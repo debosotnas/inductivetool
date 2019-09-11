@@ -18,6 +18,8 @@ const CLASS_CSS_PREFIX = 'hightlight-';
 })
 export class TextPortionComponent implements OnInit {
 
+  @Input() initPortionText: string;
+
   @Input() showListContainer: boolean;
   @Input() showHighlightContainer: boolean;
 
@@ -44,8 +46,8 @@ export class TextPortionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.textPortion = testPortion;
-    this.words = this.textPortion.split(' ');
+    this.textPortion = this.initPortionText;
+    // this.emitShowLists();
   }
 
   showItemList(itemId: string): void {

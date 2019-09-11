@@ -1,5 +1,5 @@
 import { Component, Renderer2, OnInit } from '@angular/core';
-import { ShowListEvent, HighlightItem } from './common/common.types';
+import { ShowListEvent, HighlightItem, State } from './common/common.types';
 import { HIGHLIGHT_COMMON_CLASS } from './common/constants';
 import { TextHelperService } from './text-helper.service';
 
@@ -10,9 +10,12 @@ import { TextHelperService } from './text-helper.service';
 })
 export class AppComponent implements OnInit {
 
+  initialData: State;
+
   hightlightList = {};
   showListContainer = false;
   showHighlightContainer = true;
+  initPortionText: string;
 
   renderer: Renderer2;
   title = 'Inductive Tool';
@@ -20,6 +23,15 @@ export class AppComponent implements OnInit {
 
   constructor(rend: Renderer2) {
     this.renderer = rend;
+    this.setupInitialData();
+  }
+
+  setupInitialData(): void {
+    this.initialData = TextHelperService.getData();
+    this.showListContainer = this.initialData.buttonPanel;
+    this.showHighlightContainer = this.initialData.buttonHighlight;
+    this.currentFontSize = this.initialData.fontSize;
+    this.initPortionText = this.initialData.textPortion;
   }
 
   ngOnInit() {
@@ -31,12 +43,11 @@ export class AppComponent implements OnInit {
       target.outerHTML = target.innerHTML;
       this.showCurrentLists({ text: document.querySelector('.block-portion').innerHTML});
     });
+    this.hightlightList = TextHelperService.getHighLightList(this.initialData.textPortion);
   }
 
   showCurrentLists(event: ShowListEvent) {
     this.hightlightList = TextHelperService.getHighLightList(event.text);
-    // console.log(hightlightList);
-    // TODO
   }
 
   fontUp(): void {
@@ -44,6 +55,13 @@ export class AppComponent implements OnInit {
     if (this.currentFontSize > 9) {
       this.currentFontSize = 9;
     }
+    this.persistDataFont();
+  }
+
+  persistDataFont() {
+    const data: State = TextHelperService.getData();
+    data.fontSize = this.currentFontSize;
+    TextHelperService.saveData(data);
   }
 
   fontDown(): void {
@@ -51,18 +69,29 @@ export class AppComponent implements OnInit {
     if (this.currentFontSize < 0) {
       this.currentFontSize = 0;
     }
+    this.persistDataFont();
   }
 
   fontReset(): void {
     this.currentFontSize = 5;
+    this.persistDataFont();
   }
 
   showHideHighlight(): void {
     this.showHighlightContainer = !this.showHighlightContainer;
+    this.persistButtonsList();
   }
 
   showHideList(): void {
     this.showListContainer = !this.showListContainer;
+    this.persistButtonsList();
+  }
+
+  persistButtonsList() {
+    const data: State = TextHelperService.getData();
+    data.buttonHighlight = this.showHighlightContainer;
+    data.buttonPanel = this.showListContainer;
+    TextHelperService.saveData(data);
   }
 
 }

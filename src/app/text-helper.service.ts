@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HIGHLIGHT_COMMON_CLASS } from './common/constants';
-import { HighlightItem } from './common/common.types';
+import { HIGHLIGHT_COMMON_CLASS, testPortion } from './common/constants';
+import { HighlightItem, State } from './common/common.types';
 import { TagNamesEnum } from './common/valid-tags.enum';
 
 @Injectable({
@@ -8,7 +8,11 @@ import { TagNamesEnum } from './common/valid-tags.enum';
 })
 export class TextHelperService {
 
-  constructor() { }
+  static state: State;
+
+  constructor() {
+    // TextHelperService.loadData();
+  }
 
   static getTagName(styleName: string): string {
     const cssName: string = styleName.split('-').join('');
@@ -17,6 +21,8 @@ export class TextHelperService {
   }
 
   static getHighLightList(htmlPortion: string): any[] {
+    TextHelperService.persistPortionText(htmlPortion);
+
     const partitions: Array<any>[] = [];
 
     const div: HTMLDivElement = document.createElement('div');
@@ -43,6 +49,40 @@ export class TextHelperService {
       }
     });
     return partitions;
+  }
+
+  static saveData(state: State): void {
+    window.localStorage.setItem('inductiveToolv1', JSON.stringify(state));
+  }
+
+  static loadData(): void {
+    const strState: string = window.localStorage.getItem('inductiveToolv1');
+    let stateN: State;
+
+    if (!strState) {
+      stateN = {
+        buttonHighlight: true,
+        buttonPanel: false,
+        fontSize: 5,
+        textPortion: testPortion
+      };
+    } else {
+      stateN = JSON.parse(strState);
+    }
+    this.state = stateN;
+  }
+
+  static getData(): State {
+    if (!this.state) {
+      TextHelperService.loadData()
+    }
+    return this.state;
+  }
+
+  static persistPortionText(outerHTML: string) {
+    const data: State = TextHelperService.getData();
+    data.textPortion = outerHTML;
+    TextHelperService.saveData(data);
   }
 
 }
