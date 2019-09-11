@@ -54,14 +54,34 @@
     margin: 2px
     font-size: .8em
     
-.hightlight-item
-  cursor: pointer
-  &:hover
-    box-shadow: 0px 1px 3px 0px #aaa
+.highlight-disabled
+  border-left: 4px solid #ddd
+  border-radius: 10px 0px 0px 10px
+
+.highlight-enabled 
+  border-left: 4px solid #ef8a3f
+  border-radius: 10px 0px 0px 10px
+
+  .hightlight-item
+    cursor: pointer
+    &:hover
+      box-shadow: 0px 1px 3px 0px #aaa
 
 .hightlight-item.over-state
-  box-shadow: 0px 1px 13px 2px #3AF, 0px 1px 6px 6px #aAF
+  box-shadow: 0px 1px 13px 2px #33b3ff, 0px 1px 6px 6px #f9e0cf
+  border-radius: 8px
+
+.partition-list
+  margin-top: 2px
+  list-style-type: circle
+  font-size: 14px
 
 .partition-item-title
   font-weight: bold
   color: #688c5c
+
+.item-list-word
+  border: 1px dotted #880
+  border-radius: 3px
+  padding: 2px 3px
+  margin-left: 2px

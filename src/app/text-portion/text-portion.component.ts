@@ -18,14 +18,13 @@ const CLASS_CSS_PREFIX = 'hightlight-';
 })
 export class TextPortionComponent implements OnInit {
 
+  @Input() enableHighLightTool: boolean;
   @Input() initPortionText: string;
 
   @Input() showListContainer: boolean;
   @Input() showHighlightContainer: boolean;
 
   @Input() fontSizeSelected: number;
-  @Output() getTextPortion: EventEmitter<ShowListEvent>;
-
   @Input() hightlightList = {};
 
   currentRangeSelection: Range;
@@ -38,11 +37,15 @@ export class TextPortionComponent implements OnInit {
   @HostBinding('attr.tabIndex') tabIndex = -1;
 
   @HostListener('keypress', ['$event']) keypressed(event: KeyboardEvent) {
-    this.tagAs(event.key);
+    // event.stopPropagation();
+    event.preventDefault();
+
+    if (this.enableHighLightTool) {
+      this.tagAs(event.key);
+    }
   }
 
   constructor() {
-    this.getTextPortion = new EventEmitter();
   }
 
   ngOnInit() {
@@ -51,17 +54,16 @@ export class TextPortionComponent implements OnInit {
   }
 
   showItemList(itemId: string): void {
-    const elem = document.querySelector('#' + itemId);
+    const elem = document.querySelector('.hightlight-item.' + itemId);
     elem.classList.add('over-state');
+  }
+  normalItemList(itemId: string): void {
+    const elem = document.querySelector('.hightlight-item.' + itemId);
+    elem.classList.remove('over-state');
   }
 
   showAllItemList(arrItems: any[]): void {
     arrItems.map((item) => this.showItemList(item.id));
-  }
-
-  normalItemList(itemId: string): void {
-    const elem = document.querySelector('#' + itemId);
-    elem.classList.remove('over-state');
   }
 
   normalAllItemList(arrItems: any[]): void {
@@ -73,13 +75,6 @@ export class TextPortionComponent implements OnInit {
     const textPortionModified: string = blockPortionItem.innerHTML;
 
     this.hightlightList = TextHelperService.getHighLightList(textPortionModified);
-
-    // console.log('>>' + hightlightList);
-    /*
-    this.getTextPortion.emit({
-      text: textPortionModified
-    });
-    */
   }
 
   tagAs(typeOfTag: any): void {
@@ -99,8 +94,11 @@ export class TextPortionComponent implements OnInit {
       }
 
       parentNode = document.createElement('span');
-      parentNode.setAttribute('class', (CLASS_CSS_PREFIX + typeOfTag) + ' ' + HIGHLIGHT_COMMON_CLASS);
-      parentNode.setAttribute('id', 'id' + (new Date()).getTime() + Math.ceil(Math.random() * 1000));
+
+      const tmpId = 'id' + (new Date()).getTime() + Math.ceil(Math.random() * 1000);
+      // parentNode.setAttribute('id', tmpId);
+      // parentNode.setAttribute('data-ref', tmpId);
+      parentNode.setAttribute('class', (CLASS_CSS_PREFIX + typeOfTag) + ' ' + HIGHLIGHT_COMMON_CLASS + ' ' + tmpId);
 
       this.currentRangeSelection.surroundContents(parentNode);
       document.getSelection().empty();

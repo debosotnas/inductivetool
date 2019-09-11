@@ -1,4 +1,4 @@
-import { Component, Renderer2, OnInit } from '@angular/core';
+import { Component, Renderer2, OnInit, HostBinding, HostListener } from '@angular/core';
 import { ShowListEvent, HighlightItem, State } from './common/common.types';
 import { HIGHLIGHT_COMMON_CLASS } from './common/constants';
 import { TextHelperService } from './text-helper.service';
@@ -10,6 +10,9 @@ import { TextHelperService } from './text-helper.service';
 })
 export class AppComponent implements OnInit {
 
+  // @HostBinding('attr.tabIndex') tabIndex = -1;
+
+  enableHighLightTool: boolean;
   initialData: State;
 
   hightlightList = {};
@@ -32,12 +35,24 @@ export class AppComponent implements OnInit {
     this.showHighlightContainer = this.initialData.buttonHighlight;
     this.currentFontSize = this.initialData.fontSize;
     this.initPortionText = this.initialData.textPortion;
+
+    this.enableHighLightTool = TextHelperService.enableHighLightTool;
   }
+
+  /*
+  @HostListener('document:keypress', ['$event']) keypressed(event: KeyboardEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (event.code === 'Space') {
+      this.startStopHighlight();
+    }
+  }
+  */
 
   ngOnInit() {
     this.renderer.listen('document', 'click', (event: MouseEvent) => {
       const target: HTMLElement = event.target as HTMLElement;
-      if (!target.classList.contains(HIGHLIGHT_COMMON_CLASS)) {
+      if (!target.classList.contains(HIGHLIGHT_COMMON_CLASS) || !TextHelperService.enableHighLightTool) {
         return;
       }
       target.outerHTML = target.innerHTML;
@@ -92,6 +107,11 @@ export class AppComponent implements OnInit {
     data.buttonHighlight = this.showHighlightContainer;
     data.buttonPanel = this.showListContainer;
     TextHelperService.saveData(data);
+  }
+
+  startStopHighlight(): void {
+    TextHelperService.enableHighLightTool = !TextHelperService.enableHighLightTool;
+    this.enableHighLightTool = TextHelperService.enableHighLightTool;
   }
 
 }

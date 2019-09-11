@@ -2,21 +2,27 @@ import { Injectable } from '@angular/core';
 import { HIGHLIGHT_COMMON_CLASS, testPortion } from './common/constants';
 import { HighlightItem, State } from './common/common.types';
 import { TagNamesEnum } from './common/valid-tags.enum';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TextHelperService {
+  static portionService = 'assets/test-portion.json';
 
+  // static http: HttpClient;
   static state: State;
+  static enableHighLightTool = true;
 
-  constructor() {
+  constructor(private http: HttpClient) {
+    // TextHelperService.http = http;
     // TextHelperService.loadData();
   }
 
   static getTagName(styleName: string): string {
-    const cssName: string = styleName.split('-').join('');
-    const enumName: string = cssName.charAt(0).toUpperCase() + cssName.slice(1);
+    const cssNameArr: string[] = styleName.split('-');
+    const cssFormatLast: string = cssNameArr[0] + cssNameArr[1].toUpperCase();
+    const enumName: string = cssFormatLast.charAt(0).toUpperCase() + cssFormatLast.slice(1);
     return TagNamesEnum[enumName];
   }
 
@@ -31,20 +37,21 @@ export class TextHelperService {
     highlightItems.forEach((item: any) => {
       const partitionKey: string = item.classList[0];
       const currentPartition: HighlightItem[] = partitions[partitionKey];
+      const tmpId = item.classList[item.classList.length - 1];
       if (Array.isArray(currentPartition)) {
         currentPartition.push({
-          content: item.innerText,
+          content: String(item.innerText).trim(),
           type: partitionKey,
           item,
-          id: item.id
+          id: tmpId
         });
         partitions[partitionKey] = currentPartition;
       } else {
         partitions[partitionKey] = [{
-            content: item.innerText,
+            content: String(item.innerText).trim(),
             type: partitionKey,
             item,
-            id: item.id
+            id: tmpId
           }];
       }
     });
@@ -60,12 +67,27 @@ export class TextHelperService {
     let stateN: State;
 
     if (!strState) {
+
+      /*
+      this.callPortionService()
+        .subscribe((data: any) => stateN = {
+            buttonHighlight: true,
+            buttonPanel: false,
+            fontSize: 5,
+            textPortion: TextHelperService.parsePassage(data.passages)
+
+            // heroesUrl: data['heroesUrl'],
+            // textfile:  data['textfile']
+        });
+      */
+
       stateN = {
         buttonHighlight: true,
         buttonPanel: false,
         fontSize: 5,
         textPortion: testPortion
       };
+
     } else {
       stateN = JSON.parse(strState);
     }
@@ -74,7 +96,7 @@ export class TextHelperService {
 
   static getData(): State {
     if (!this.state) {
-      TextHelperService.loadData()
+      TextHelperService.loadData();
     }
     return this.state;
   }
@@ -85,4 +107,17 @@ export class TextHelperService {
     TextHelperService.saveData(data);
   }
 
+  callPortionService() {
+    return this.http.get(TextHelperService.portionService);
+  }
+
+  parsePassage(verses: {verse: number, text: string}[]): string {
+    const arrVerses: string[] = [];
+
+    verses.forEach((item) => {
+      arrVerses.push(`<strong>${item.verse}</strong> ${item.text}`);
+    });
+
+    return verses.join('');
+  }
 }

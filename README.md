@@ -37,3 +37,9 @@ getSelection https://medium.com/@propagandra/window-getselection-and-range-in-ja
 https://codepen.io/pen/?editors=1010#0
 .surroundContents(element)
 
+## Open APIs to get Bible content
+- http://new.biblesearch.americanbible.org/pages/api/documentation/versions
+- https://bibliaapi.com/docs/Available_Bibles
+- https://docs.api.bible/docs/faq
+- https://getbible.net/api
+
