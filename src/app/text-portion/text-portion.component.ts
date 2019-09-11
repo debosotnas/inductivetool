@@ -1,48 +1,94 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding, HostListener, ViewEncapsulation, Input, Output } from '@angular/core';
 import { TextSelectEvent } from '../text-selection/text-selection.directive';
+import { ValidTagsEnum } from '../common/valid-tags.enum';
+import { testPortion, HIGHLIGHT_COMMON_CLASS } from '../common/constants';
+import { EventEmitter } from '@angular/core';
+import { ShowListEvent } from '../common/common.types';
+
+const CLASS_CSS_PREFIX = 'hightlight-';
+
+// <app-text-tooltip *ngFor="let word of words" [innerHTML]="word"></app-text-tooltip>
 
 @Component({
   selector: 'app-text-portion',
   templateUrl: './text-portion.component.html',
-  styleUrls: ['./text-portion.component.sass']
+  styleUrls: ['./text-portion.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TextPortionComponent implements OnInit {
 
+  @Input() showListContainer: boolean;
+  @Input() showHighlightContainer: boolean;
+
+  @Input() fontSizeSelected: number;
+  @Output() getTextPortion: EventEmitter<ShowListEvent>;
+
   currentRangeSelection: Range;
+  textPortion: string;
+  words: string[];
 
-  constructor() {}
+  @HostBinding('attr.tabIndex') tabIndex = -1;
 
-  ngOnInit() {}
+  @HostListener('keypress', ['$event']) keypressed(event: KeyboardEvent) {
+    this.tagAs(event.key);
+  }
+
+  constructor() {
+    this.getTextPortion = new EventEmitter();
+  }
+
+  ngOnInit() {
+    this.textPortion = testPortion;
+    this.words = this.textPortion.split(' ');
+  }
+
+  emitShowLists(): void {
+    const blockPortionItem: HTMLElement = document.querySelector('.block-portion');
+    const textPortionModified: string = blockPortionItem.innerHTML;
+    this.getTextPortion.emit({
+      text: textPortionModified
+    });
+  }
 
   tagAs(typeOfTag: any): void {
-    console.log(typeOfTag);
+
+    if (!this.isValidTag(typeOfTag)) {
+      return;
+    }
+
     if (this.currentRangeSelection && this.currentRangeSelection.surroundContents) {
 
       let parentNode: HTMLSpanElement;
 
-      if (typeOfTag === 8) { // for special type of 'key words'
+      if (typeOfTag === '8') { // for special type of 'key words'
         const extraNode = document.createElement('span');
         extraNode.setAttribute('class', 'extra-hl8');
         this.currentRangeSelection.surroundContents(extraNode);
       }
 
       parentNode = document.createElement('span');
-      parentNode.setAttribute('class', 'hightlight-' + typeOfTag);
+      parentNode.setAttribute('class', (CLASS_CSS_PREFIX + typeOfTag) + ' ' + HIGHLIGHT_COMMON_CLASS);
+      parentNode.setAttribute('id', 'id' + (new Date()).getTime() + Math.ceil(Math.random() * 1000));
 
       this.currentRangeSelection.surroundContents(parentNode);
+      document.getSelection().empty();
+      this.emitShowLists();
     }
   }
 
-  scratch(): void {
-    console.log('>>> scratch!!!');
+  isValidTag(typeOfTag: any): boolean {
+    const prefix: string = CLASS_CSS_PREFIX.charAt(0).toUpperCase() + CLASS_CSS_PREFIX.slice(1, -1);
+    return !!ValidTagsEnum[prefix + (typeOfTag as string).toUpperCase()];
   }
 
   public renderRectangles(event: TextSelectEvent): void {
+    /*
     console.group('Text Select Event');
     console.log('Text:', event.text);
     console.log('Viewport Rectangle:', event.viewportRectangle);
     console.log('Host Rectangle:', event.hostRectangle);
     console.groupEnd();
+    */
 
     this.currentRangeSelection = event.rangeSelection;
     /*
@@ -50,12 +96,12 @@ export class TextPortionComponent implements OnInit {
     // exist. Or, if a selection is being removed, the rectangles will be null.
     if (event.hostRectangle) {
       this.hostRectangle = event.hostRectangle;
-      this.selectedText = event.text;
+      // this.selectedText = event.text;
     } else {
       this.hostRectangle = null;
-      this.selectedText = '';
-    }
-    */
+      // this.selectedText = '';
+    } */
+
   }
 
   /*
@@ -73,6 +119,7 @@ export class TextPortionComponent implements OnInit {
     Propósito:                              43:40 - (flecha doble hacia arriba)
     Razon:                                  44:08
     Consecuencia:                           44:00
+    Conclusion                              44:28
     Causa efecto:                           48:05
   */
 

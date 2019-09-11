@@ -40,7 +40,7 @@ interface SelectionRectangle {
 }
 
 @Directive({
-  selector: '[appTextSelection]',
+  selector: '[appTextSelection]'
 })
 export class TextSelectionDirective implements OnInit, OnDestroy {
 

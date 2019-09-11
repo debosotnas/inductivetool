@@ -1,5 +1,8 @@
 @import '~bootstrap/dist/css/bootstrap.min.css'
 
+html, body 
+  height:100%
+
 // h1
 //   color: #369
 //   font-family: Arial, Helvetica, sans-serif
@@ -20,16 +23,18 @@
 // *
 //   font-family: Arial, Helvetica, sans-serif
 
-
+app-text-tooltip
+  display: inline-block
+  padding: 0 .15em
   
 .hightlight-1, .hightlight-2
   background-color: #F4F108
   background-repeat: no-repeat
   display: inline-block
-  height: 30px
+  height: 1.5em
 
 .hightlight-1
-  padding: 3px
+  padding: .1em
   padding-top: 0
   background-image: url(assets/highlights/highlight-1.png)
   background-position: 50% 50%
@@ -39,21 +44,21 @@
   background-image: url(assets/highlights/highlight-2.png)
   background-position: 100% 50%
   background-size: 1.1em
-  padding-right: 20px
+  padding-right: 1em
 
 //Pregunta
 .hightlight-3
   background-image: url(assets/highlights/highlight-3.png)
   background-position: 0% 50%
-  background-size: 1.1em
+  background-size: .8em
   background-repeat: no-repeat
-  padding-left: 20px
+  padding-left: .8em
 
 // Persona importante
 .hightlight-4
   text-shadow: 3px 2px 1px #e27c7c
   border-bottom: 1px solid #e27c7c
-  height: 26px
+  height: 1.4em
   display: inline-block
 
 .hightlight-5
@@ -66,13 +71,13 @@
   background-image: url(assets/highlights/highlight-5.png)
   background-position: 50% 50%
   background-size: 1.5em
-  height: 30px
+  height: 1.6em
 
 // Lugares
 .hightlight-6
   background-repeat: no-repeat
   display: inline-block
-  height: 30px
+  height: 1.6em
   background-image: url(assets/highlights/highlight-6.png)
   background-position: 50% 50%
   background-size: 2em
@@ -83,7 +88,7 @@
   background-position: 0% 50%
   background-size: 1.3em
   background-repeat: no-repeat
-  padding-left: 20px
+  padding-left: 1.1em
   display: inline-block
 
 //Palabra Clave
@@ -92,17 +97,18 @@
   background-position: 0% 50%
   background-size: 1.5em
   background-repeat: no-repeat
-  padding-left: 25px
+  padding-left: 1.55em
   display: inline-block
 
   .extra-hl8
     background-color: #d48abf
     display: inline-block
-    padding: 0px 2px
+    padding: 0px .1em
     background-image: url(assets/highlights/highlight-8b.png)
     background-position: 0% 92%
     background-repeat: repeat-x
     background-size: .8em
+    height: 1.9em
 
 //Palabras Repetidas
 .hightlight-9
@@ -113,39 +119,44 @@
 .hightlight-0
   background-repeat: no-repeat
   display: inline-block
-  height: 30px
+  height: 1.6em
   background-image: url(assets/highlights/highlight-0.png)
   background-position: 50% 50%
-  background-size: 1.5em
+  background-size: 1.3em
 
 // Proposito - flecha doble arriba
 .hightlight-a
   background-repeat: no-repeat
   display: inline-block
-  height: 30px
+  height: 1.6em
   background-image: url(assets/highlights/highlight-a.png)
   background-position: 50% 50%
-  background-size: 1.5em
+  background-size: 1.1em
 
 // Razon - rect
 .hightlight-b
   border: 1.5px solid #45a735
   background-color: #efefb3
-  padding: 0 3px
+  padding: 0 .2em
 
 // Razon - circle
 .hightlight-c
   border: 1.5px solid #9ea735
   border-radius: 100%
-  padding: 0 3px
+  padding: 0 .2em
+
+// Conclusion
+.hightlight-d
+  background-color: #efefb3
+  padding: 0 .2em
 
 // Verbo pasivo
 .hightlight-e
   background-image: url(assets/highlights/highlight-e.png)
   background-position: 100% 50%
-  background-size: 1.1em
+  background-size: .6em
   background-repeat: no-repeat
-  padding-right: 20px
+  padding-right: .6em
   display: inline-block
 
 // Verbo imperativo
@@ -154,9 +165,9 @@
   display: inline-block
   background-image: url(assets/highlights/highlight-f.png)
   background-position: 100% 50%
-  background-size: .7em
+  background-size: .6em
   background-repeat: no-repeat
-  padding-right: 13px
+  padding-right: .6em
   
 //Causa efecto
 .hightlight-g
@@ -165,5 +176,5 @@
   background-size: 2.5em
   background-repeat: no-repeat
   display: inline-block
-  padding: 0 7px
-  height: 25px
+  padding: 0 .4em 0 0
+  height: 1.5em

@@ -1,36 +1,35 @@
-<div class="container-fluid">
-    <div class="row">
-      <div class="col-8">
-          <div appTextSelection (textSelectEvent)="renderRectangles($event)" class="block-portion container">
-            <strong>3</strong> Bendito sea el Dios y Padre de nuestro Señor Jesucristo, quien según su gran misericordia, nos ha hecho nacer de nuevo a una esperanza viva, mediante la resurrección de Jesucristo de entre los muertos,
-            <strong>4</strong> para obtener una herencia incorruptible, inmaculada, y que no se marchitará, reservada en los cielos para vosotros,
-            <strong>5</strong> que sois protegidos[c] por el poder de Dios mediante la fe, para la salvación que está preparada para ser revelada en el último tiempo.
-            <strong>6</strong> En lo cual os regocijáis grandemente, aunque ahora, por un poco de tiempo si es necesario, seáis afligidos con diversas pruebas[d],
-            <strong>7</strong> para que la prueba[e] de vuestra fe, más preciosa que el oro que perece, aunque probado por fuego, sea hallada que resulta en alabanza, gloria y honor en la revelación de Jesucristo;
-            <strong>8</strong> a quien sin haberle visto, le amáis, y a quien ahora no veis, pero creéis en El, y os regocijáis grandemente con gozo inefable y lleno de gloria[f],
-            <strong>9</strong> obteniendo, como[g] resultado de vuestra fe, la salvación de vuestras[h] almas.
-            <strong>10</strong> Acerca de esta salvación, los profetas que profetizaron de la gracia que vendría a vosotros, diligentemente inquirieron e indagaron,
-            <strong>11</strong> procurando saber[i] qué persona o tiempo indicaba el Espíritu de Cristo dentro de ellos, al predecir los sufrimientos de Cristo y las glorias que seguirían[j].
-          </div>
-      </div>
-      <div class="col highlight-buttons">
-        <button (click)="tagAs(1)">"Dios" (1)</button>
-        <button (click)="tagAs(2)">"Jesucristo" (2)</button>
-        <button (click)="tagAs(3)">"Pregunta" (3)</button>
-        <button (click)="tagAs(4)">"Personas Importantes" (4)</button>
-        <button (click)="tagAs(5)">"Destinatarios" (5)</button>
-        <button (click)="tagAs(6)">"Lugares" (6)</button>
-        <button (click)="tagAs(7)">"Tiempo" (7)</button>
-        <button (click)="tagAs(8)">"Palabra Clave" (8)</button>
-        <button (click)="tagAs(9)">"Palabras Repetidas" (9)</button>
-        <button (click)="tagAs(0)">"Contrastes, comparaciones, etc" (0)</button>
-        <button (click)="tagAs('a')">"Propósito" (a)</button>
-        <button (click)="tagAs('b')">"Razón - Rect" (b)</button>
-        <button (click)="tagAs('c')">"Razón - Circle" (c)</button>
-        <button (click)="tagAs('d')">"Conclusión" (d)</button>
-        <button (click)="tagAs('e')">"Verbo Pasivo" (e)</button>
-        <button (click)="tagAs('f')">"Verbo Activo" (f)</button>
-        <button (click)="tagAs('g')">"Causa efecto" (g)</button>
+<div class="container-fluid portion-container">
+  <div class="row">
+    <div class="col">
+      <div 
+        appTextSelection 
+        (textSelectEvent)="renderRectangles($event)"
+        class="block-portion container font-m-{{fontSizeSelected}}"
+        [innerHTML]="textPortion"
+      >
       </div>
     </div>
+    <div *ngIf="showHighlightContainer" class="col-2 highlight-container">
+      <button (click)="tagAs('1')">Dios (1)</button>
+      <button (click)="tagAs('2')">Jesucristo (2)</button>
+      <button (click)="tagAs('3')">Pregunta (3)</button>
+      <button (click)="tagAs('4')">Personas Importantes (4)</button>
+      <button (click)="tagAs('5')">Destinatarios (5)</button>
+      <button (click)="tagAs('6')">Lugares (6)</button>
+      <button (click)="tagAs('7')">Tiempo (7)</button>
+      <button (click)="tagAs('8')">Palabra Clave (8)</button>
+      <button (click)="tagAs('9')">Palabras Repetidas (9)</button>
+      <button (click)="tagAs('0')">Contrastes (0)</button>
+      <button (click)="tagAs('a')">Propósito (a)</button>
+      <button (click)="tagAs('b')">Razón - Rect (b)</button>
+      <button (click)="tagAs('c')">Razón - Circle (c)</button>
+      <button (click)="tagAs('d')">Conclusión (d)</button>
+      <button (click)="tagAs('e')">Verbo Pasivo (e)</button>
+      <button (click)="tagAs('f')">Verbo Activo (f)</button>
+      <button (click)="tagAs('g')">Causa efecto (g)</button>
+    </div>
+    <div *ngIf="showListContainer" class="col-4 list-container">
+      Info
+    </div>
+  </div>
 </div>

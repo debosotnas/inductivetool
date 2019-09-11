@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { TextPortionComponent } from './text-portion/text-portion.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TextSelectionDirective } from './text-selection/text-selection.directive';
+import { TextTooltipComponent } from './text-tooltip/text-tooltip.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TextPortionComponent,
-    TextSelectionDirective
+    TextSelectionDirective,
+    TextTooltipComponent
   ],
   imports: [
     BrowserModule,
