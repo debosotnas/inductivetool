@@ -5,9 +5,9 @@
         <div class="search-title-block">
           <span class="search-title">{{ title }}</span><span class="beta">(Beta)</span>
         </div>
-        <input type="text" placeholder="1 Pedro 2:4-6" class="search-pasaje-txt" />
+        <input type="text" value="{{titlePortion}}" placeholder="1 Pedro 2:4-6" class="search-pasaje-txt" />
 
-        <button>Load portion</button>
+        <button (click)="loadSimplePortion()">Load portion</button>
 
         <button (click)="startStopHighlight()" [ngClass]="{ 'stop-tool-btn': enableHighLightTool}" class="btn-enable-highlight">
             {{enableHighLightTool ? 'Stop' : 'Start'}} highlight tool

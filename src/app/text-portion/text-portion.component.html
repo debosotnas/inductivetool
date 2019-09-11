@@ -6,7 +6,7 @@
         (textSelectEvent)="renderRectangles($event)"
         class="block-portion container font-m-{{fontSizeSelected}}"
         [ngClass]="{'highlight-enabled' : enableHighLightTool, 'highlight-disabled': !enableHighLightTool}"
-        [innerHTML]="textPortion"
+        [innerHTML]="initPortionText"
       >
       </div>
     </div>

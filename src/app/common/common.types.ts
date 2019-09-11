@@ -21,4 +21,15 @@ export interface State {
   buttonPanel: boolean;
   fontSize: number;
   textPortion: string;
+  titlePortion: string;
+}
+
+export interface Passages {
+  portion: string;
+  passages: Passage[];
+}
+
+export interface Passage {
+  verse: number;
+  text: string;
 }

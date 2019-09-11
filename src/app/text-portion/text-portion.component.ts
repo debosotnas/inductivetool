@@ -28,11 +28,10 @@ export class TextPortionComponent implements OnInit {
   @Input() hightlightList = {};
 
   currentRangeSelection: Range;
-  textPortion: string;
   words: string[];
 
   objectKeys = Object.keys;
-  getTagName = TextHelperService.getTagName;
+  getTagName = this.textHelperService.getTagName;
 
   @HostBinding('attr.tabIndex') tabIndex = -1;
 
@@ -45,11 +44,10 @@ export class TextPortionComponent implements OnInit {
     }
   }
 
-  constructor() {
+  constructor(private textHelperService: TextHelperService) {
   }
 
   ngOnInit() {
-    this.textPortion = this.initPortionText;
     // this.emitShowLists();
   }
 
@@ -74,7 +72,7 @@ export class TextPortionComponent implements OnInit {
     const blockPortionItem: HTMLElement = document.querySelector('.block-portion');
     const textPortionModified: string = blockPortionItem.innerHTML;
 
-    this.hightlightList = TextHelperService.getHighLightList(textPortionModified);
+    this.hightlightList = this.textHelperService.getHighLightList(textPortionModified);
   }
 
   tagAs(typeOfTag: any): void {
@@ -96,8 +94,6 @@ export class TextPortionComponent implements OnInit {
       parentNode = document.createElement('span');
 
       const tmpId = 'id' + (new Date()).getTime() + Math.ceil(Math.random() * 1000);
-      // parentNode.setAttribute('id', tmpId);
-      // parentNode.setAttribute('data-ref', tmpId);
       parentNode.setAttribute('class', (CLASS_CSS_PREFIX + typeOfTag) + ' ' + HIGHLIGHT_COMMON_CLASS + ' ' + tmpId);
 
       this.currentRangeSelection.surroundContents(parentNode);

@@ -1,33 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HIGHLIGHT_COMMON_CLASS, testPortion } from './common/constants';
-import { HighlightItem, State } from './common/common.types';
+import { HighlightItem, State, Passage, Passages } from './common/common.types';
 import { TagNamesEnum } from './common/valid-tags.enum';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TextHelperService {
-  static portionService = 'assets/test-portion.json';
 
-  // static http: HttpClient;
-  static state: State;
-  static enableHighLightTool = true;
+  portionService = 'assets/test-portion.json';
+  state: State;
+  enableHighLightTool = true;
 
   constructor(private http: HttpClient) {
     // TextHelperService.http = http;
     // TextHelperService.loadData();
   }
 
-  static getTagName(styleName: string): string {
+  getTagName(styleName: string): string {
     const cssNameArr: string[] = styleName.split('-');
     const cssFormatLast: string = cssNameArr[0] + cssNameArr[1].toUpperCase();
     const enumName: string = cssFormatLast.charAt(0).toUpperCase() + cssFormatLast.slice(1);
     return TagNamesEnum[enumName];
   }
 
-  static getHighLightList(htmlPortion: string): any[] {
-    TextHelperService.persistPortionText(htmlPortion);
+  getHighLightList(htmlPortion: string): any[] {
+    this.persistPortionText(htmlPortion);
 
     const partitions: Array<any>[] = [];
 
@@ -58,34 +58,22 @@ export class TextHelperService {
     return partitions;
   }
 
-  static saveData(state: State): void {
+
+  saveData(state: State): void {
     window.localStorage.setItem('inductiveToolv1', JSON.stringify(state));
   }
 
-  static loadData(): void {
+  loadData(passages: Passages): void {
     const strState: string = window.localStorage.getItem('inductiveToolv1');
     let stateN: State;
 
     if (!strState) {
-
-      /*
-      this.callPortionService()
-        .subscribe((data: any) => stateN = {
-            buttonHighlight: true,
-            buttonPanel: false,
-            fontSize: 5,
-            textPortion: TextHelperService.parsePassage(data.passages)
-
-            // heroesUrl: data['heroesUrl'],
-            // textfile:  data['textfile']
-        });
-      */
-
       stateN = {
         buttonHighlight: true,
         buttonPanel: false,
         fontSize: 5,
-        textPortion: testPortion
+        textPortion: this.parsePassage(passages.passages),
+        titlePortion: passages.portion
       };
 
     } else {
@@ -94,30 +82,34 @@ export class TextHelperService {
     this.state = stateN;
   }
 
-  static getData(): State {
-    if (!this.state) {
-      TextHelperService.loadData();
-    }
+  getData(): State {
+    // if (!this.state) {
+      // this.loadData();
+    // }
     return this.state;
   }
 
-  static persistPortionText(outerHTML: string) {
-    const data: State = TextHelperService.getData();
+  persistPortionText(outerHTML: string) {
+    const data: State = this.getData();
     data.textPortion = outerHTML;
-    TextHelperService.saveData(data);
+    this.saveData(data);
   }
 
-  callPortionService() {
-    return this.http.get(TextHelperService.portionService);
+  callPortionService(): Observable<Passages> {
+    return this.http.get<Passages>(this.portionService);
   }
 
   parsePassage(verses: {verse: number, text: string}[]): string {
     const arrVerses: string[] = [];
 
+    if (!verses) {
+      console.error('Error parsin verses');
+      return;
+    }
     verses.forEach((item) => {
       arrVerses.push(`<strong>${item.verse}</strong> ${item.text}`);
     });
 
-    return verses.join('');
+    return arrVerses.join(' ');
   }
 }
