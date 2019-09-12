@@ -3,7 +3,8 @@ import { HIGHLIGHT_COMMON_CLASS, testPortion } from './common/constants';
 import { HighlightItem, State, Passage, Passages, BibleVersions } from './common/common.types';
 import { TagNamesEnum } from './common/valid-tags.enum';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

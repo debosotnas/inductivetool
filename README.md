@@ -43,3 +43,5 @@ https://codepen.io/pen/?editors=1010#0
 - https://docs.api.bible/docs/faq
 - https://getbible.net/api
 
+## Bootstrap
+https://ng-bootstrap.github.io/#/components/modal/examples

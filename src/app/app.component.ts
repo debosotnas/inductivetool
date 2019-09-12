@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
 
   // passageToSearch: string;
 
+  isLoadingView = true;
+
   enableHighLightTool: boolean;
   initialData: State;
 
@@ -48,8 +50,11 @@ export class AppComponent implements OnInit {
     // this.modalService.open(content, {size: 'xl'});
     this.persistVersionPortion();
 
+    this.isLoadingView = true;
     this.textHelperService.callPortionService(this.titlePortion, this.versionPortion)
       .subscribe( (data: Passages) => {
+        this.isLoadingView = false;
+
         const portion = this.textHelperService.parsePassage(data.passages);
         this.persisLoadedPortion(portion);
 
@@ -57,6 +62,10 @@ export class AppComponent implements OnInit {
         this.initPortionText = portion;
         // update list
         this.showCurrentLists({ text: document.querySelector('.block-portion').innerHTML});
+      },
+      error => {
+        alert(error.message);
+        this.isLoadingView = false;
       });
 
     console.log('>> titlePortion: ' + this.titlePortion);
@@ -94,13 +103,24 @@ export class AppComponent implements OnInit {
   */
 
   ngOnInit() {
-
+    this.isLoadingView = true;
     this.textHelperService.callPortionService()
       .subscribe(data => {
+        this.isLoadingView = false;
+
         this.textHelperService.loadData(data);
         this.initAfterService();
+      },
+      error => {
+        alert(error.message);
+        this.isLoadingView = false;
       });
 
+  }
+
+  // not used - will implement in future versions
+  selectBookChap(book: string, chap: number): void {
+    console.log(book, chap);
   }
 
   initAfterService() {

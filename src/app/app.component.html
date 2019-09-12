@@ -1,3 +1,4 @@
+<div *ngIf="isLoadingView" class="loading-wrapper"></div>
 <div class="wrapper">
   <div class="header-panel container-fluid">
     <div class="row">
@@ -5,6 +6,7 @@
         <div class="search-title-block">
           <span class="search-title">{{ title }}</span><span class="beta">(Beta)</span>
         </div>
+        <span>Pasaje: </span>
         <input type="text" [(ngModel)]="titlePortion" class="search-pasaje-txt" />
         <select class="version" [(ngModel)]="versionPortion">
           <option [selected]="versionPortion=='bla'" value="bla">LBLA</option>
@@ -12,21 +14,24 @@
           <option [selected]="versionPortion=='rvr'" value="rvr">RVR</option>
         </select>
 
-        <button (click)="loadSimplePortion()">Load portion</button>
+        <button (click)="loadSimplePortion()">Cargar pasaje</button>
 
         <button (click)="startStopHighlight()" [ngClass]="{ 'stop-tool-btn': enableHighLightTool}" class="btn-enable-highlight">
-            {{enableHighLightTool ? 'Stop' : 'Start'}} highlight tool
+            {{enableHighLightTool ? 'Detener' : 'Iniciar'}} subrayado
         </button>
       </div>
       <div class="col-sm text-right font-size-box">
         <button (click)="showHideHighlight()">
-          {{showHighlightContainer ? 'Hide' : 'Show'}} buttons
+          {{showHighlightContainer ? 'Ocultar' : 'Mostrar'}} botones
         </button>
         - <button (click)="showHideList()">
-          {{showListContainer ? 'Hide' : 'Show'}} list panel
+          {{showListContainer ? 'Ocultar' : 'Mostrar'}} listas
         </button>
-        | Font size: <button (click)="fontUp()">+</button> / <button (click)="fontDown()">-</button>
-        - <button (click)="fontReset()">Reset</button></div>
+        | Tamaño de fuente: <button (click)="fontUp()">+</button> / <button (click)="fontDown()">-</button>
+        - <button (click)="fontReset()">Reiniciar</button>
+
+        <button class="help-button btn btn-primary" (click)="modalService.open(helpContent, { size: 'lg' })">Ayuda</button>
+      </div>
     </div>
   </div>
   <app-text-portion
@@ -40,6 +45,37 @@
   </app-text-portion>
 </div>
 <router-outlet></router-outlet>
+
+<ng-template #helpContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Ayuda general</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <ul>
+          <li><b>Escriba el pasaje</b> que quiere cargar en el campo "Pasaje" en la barra superior (por ejemplo: <i>1 Pedro 2:1-2</i>).</li>
+          <li>Seleccione la <b>versión</b> que desea utilizar. Actualmente se encuentran disponibles 3 versiones: La Biblia de las Américas; Nueva Versión Internacional; Reina Valera.</li>
+          <li>Presione el botón "Cargar pasaje" para traer la porción al editor.</li>
+          <li>Verifique que la <b>función de subrayado</b> esté activa (botón "Iniciar subrayado"/"Detener subrayado").</li>
+          <li>Puede hacer click en los <b>botones de subrayado</b> (click en "Mostrar botones" en caso que no estén visibles) o <b>utilizar los números/letras</b> que aparecen entre paréntesis en cada botón. Por ejemplo para subrayar una palabra relacionada con "Dios", después de seleccionar la palabra puede presionar la tecla "1".</li>
+          <li>Para <b>eliminar un subrayado</b>, con la función de subrayado activa simplemente haga click sobre el texto subrayado.</li>
+          <li>A medida que se realice el subrayado es posible <b>visualizar las listas</b> por cada categoría resaltada. Muestre u oculte el panel de listas con el botón "Mostrar/Ocultar panel".</li>
+          <li>Cuando pasa el mouse sobre las <b>listas</b> (en el Panel de listas) las palabras relacionadas se destacarán.</li>
+          <li>Para modificar el <b>tamaño de la letra</b> utilice los botones "+" y "-". El botón "Reiniciar" establece el tamaño de fuente por defecto.</li>
+        </ul>
+        <div>
+          <b>Nota sobre almacenamiento:</b> tanto la porción cargada, como la configuración que ustede seleccione para cada función de la aplicación queda almacenada temporalmente solo en el navegador que es utilizado.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>
+    </div>
+</ng-template>
+
 <ng-template #longContent let-modal>
     <div class="modal-header">
       <h4 class="modal-title">Modal title</h4>
