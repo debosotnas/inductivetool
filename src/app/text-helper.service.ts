@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HIGHLIGHT_COMMON_CLASS, testPortion } from './common/constants';
-import { HighlightItem, State, Passage, Passages } from './common/common.types';
+import { HighlightItem, State, Passage, Passages, BibleVersions } from './common/common.types';
 import { TagNamesEnum } from './common/valid-tags.enum';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,7 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class TextHelperService {
 
-  portionService = 'assets/test-portion.json';
+  portionDefault = 'assets/test-portion.json';
+  portionService = 'svc/loadverses.php?str=';
   state: State;
   enableHighLightTool = true;
 
@@ -73,7 +74,8 @@ export class TextHelperService {
         buttonPanel: false,
         fontSize: 5,
         textPortion: this.parsePassage(passages.passages),
-        titlePortion: passages.portion
+        titlePortion: passages.portion,
+        versionPortion: BibleVersions.LBLA
       };
 
     } else {
@@ -95,8 +97,14 @@ export class TextHelperService {
     this.saveData(data);
   }
 
-  callPortionService(): Observable<Passages> {
-    return this.http.get<Passages>(this.portionService);
+  callPortionService(passage: string = '', version: string = ''): Observable<Passages> {
+    let portionURL: string;
+    if (!passage || !version) {
+      portionURL = this.portionDefault;
+    } else {
+      portionURL = `${this.portionService}${passage}&ver=${version}`;
+    }
+    return this.http.get<Passages>(portionURL);
   }
 
   parsePassage(verses: {verse: number, text: string}[]): string {

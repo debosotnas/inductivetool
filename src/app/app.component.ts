@@ -1,7 +1,8 @@
 import { Component, Renderer2, OnInit, HostBinding, HostListener } from '@angular/core';
-import { ShowListEvent, HighlightItem, State, Passage } from './common/common.types';
-import { HIGHLIGHT_COMMON_CLASS } from './common/constants';
+import { ShowListEvent, HighlightItem, State, Passage, Passages } from './common/common.types';
+import { HIGHLIGHT_COMMON_CLASS, BooksWithChapters } from './common/constants';
 import { TextHelperService } from './text-helper.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,8 @@ export class AppComponent implements OnInit {
 
   // @HostBinding('attr.tabIndex') tabIndex = -1;
 
+  // passageToSearch: string;
+
   enableHighLightTool: boolean;
   initialData: State;
 
@@ -19,19 +22,52 @@ export class AppComponent implements OnInit {
   showListContainer = false;
   showHighlightContainer = true;
   initPortionText: string;
+
   titlePortion: string;
+  versionPortion: string;
 
   renderer: Renderer2;
   title = 'Inductive Tool';
   currentFontSize = 5;
 
-  constructor(rend: Renderer2, private textHelperService: TextHelperService) {
+  allBooks = BooksWithChapters; // not used
+
+  constructor(rend: Renderer2,
+              private textHelperService: TextHelperService,
+              private modalService: NgbModal) {
     this.renderer = rend;
     // this.setupInitialData();
   }
 
+  arrayOne(i: number): any[] {
+    return Array(i);
+  }
+
   loadSimplePortion(): void {
-    console.log('show modal for portion');
+    // console.log('show modal for portion');
+    // this.modalService.open(content, {size: 'xl'});
+    this.persistVersionPortion();
+
+    this.textHelperService.callPortionService(this.titlePortion, this.versionPortion)
+      .subscribe( (data: Passages) => {
+        const portion = this.textHelperService.parsePassage(data.passages);
+        this.persisLoadedPortion(portion);
+
+        // update portion
+        this.initPortionText = portion;
+        // update list
+        this.showCurrentLists({ text: document.querySelector('.block-portion').innerHTML});
+      });
+
+    console.log('>> titlePortion: ' + this.titlePortion);
+    console.log('>> versionPortion: ' + this.versionPortion);
+  }
+
+  persisLoadedPortion(portion: string): void {
+    const data: State = this.textHelperService.getData();
+    data.textPortion = portion;
+    data.versionPortion = this.versionPortion;
+    this.textHelperService.saveData(data);
   }
 
   setupInitialData(): void {
@@ -40,10 +76,11 @@ export class AppComponent implements OnInit {
     this.showListContainer = this.initialData.buttonPanel;
     this.showHighlightContainer = this.initialData.buttonHighlight;
     this.currentFontSize = this.initialData.fontSize;
+    this.versionPortion = this.initialData.versionPortion;
+    this.enableHighLightTool = this.textHelperService.enableHighLightTool;
+
     this.initPortionText = this.initialData.textPortion;
     this.titlePortion = this.initialData.titlePortion;
-
-    this.enableHighLightTool = this.textHelperService.enableHighLightTool;
   }
 
   /*
@@ -126,6 +163,12 @@ export class AppComponent implements OnInit {
     const data: State = this.textHelperService.getData();
     data.buttonHighlight = this.showHighlightContainer;
     data.buttonPanel = this.showListContainer;
+    this.textHelperService.saveData(data);
+  }
+
+  persistVersionPortion() {
+    const data: State = this.textHelperService.getData();
+    data.versionPortion = this.versionPortion;
     this.textHelperService.saveData(data);
   }
 

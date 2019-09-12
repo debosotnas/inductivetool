@@ -22,6 +22,7 @@ export interface State {
   fontSize: number;
   textPortion: string;
   titlePortion: string;
+  versionPortion: string;
 }
 
 export interface Passages {
@@ -32,4 +33,10 @@ export interface Passages {
 export interface Passage {
   verse: number;
   text: string;
+}
+
+export enum BibleVersions {
+  LBLA = 'bla',
+  NVI = 'nvi',
+  RVR = 'rvr'
 }
