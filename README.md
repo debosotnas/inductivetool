@@ -45,3 +45,16 @@ https://codepen.io/pen/?editors=1010#0
 
 ## Bootstrap
 https://ng-bootstrap.github.io/#/components/modal/examples
+
+## SQLite to MySql converter
+https://www.rebasedata.com/convert-sqlite-to-mysql-online
+
+# Simple php lib for mysql
+https://meekro.com/quickstart.php
+
+## MyBible data for bible/commentaries/etc modules
+
+- LBLA Module: https://www.ph4.org/b4_poisk.php?text=lbla&abbr=0
+- MyBible site: more info about modules: https://mybible.zone/wanted-eng.php
+- MyBible site: format and module details: https://docs.google.com/document/d/12rf4Pqy13qhnAW31uKkaWNTBDTtRbNW0s7cM0vcimlA/edit
+- 

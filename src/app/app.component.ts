@@ -28,11 +28,14 @@ export class AppComponent implements OnInit {
   titlePortion: string;
   versionPortion: string;
 
+  bookselected = '10';
+  listBooks = BooksWithChapters;
+
   renderer: Renderer2;
   title = 'Inductive Tool';
   currentFontSize = 5;
 
-  allBooks = BooksWithChapters; // not used
+  // allBooks = BooksWithChapters; // not used
 
   constructor(rend: Renderer2,
               private textHelperService: TextHelperService,
@@ -43,6 +46,10 @@ export class AppComponent implements OnInit {
 
   arrayOne(i: number): any[] {
     return Array(i);
+  }
+
+  open(content): void {
+    this.modalService.open(content, { size: 'lg' });
   }
 
   loadSimplePortion(): void {

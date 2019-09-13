@@ -33,6 +33,7 @@ export interface Passages {
 export interface Passage {
   verse: number;
   text: string;
+  verseClass: string;
 }
 
 export enum BibleVersions {

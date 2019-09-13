@@ -12,7 +12,7 @@ import { retry, catchError } from 'rxjs/operators';
 export class TextHelperService {
 
   portionDefault = 'assets/test-portion.json';
-  portionService = 'svc/loadverses.php?str=';
+  portionService = 'svc/getverses.php?portion=';
   state: State;
   enableHighLightTool = true;
 
@@ -98,17 +98,17 @@ export class TextHelperService {
     this.saveData(data);
   }
 
-  callPortionService(passage: string = '', version: string = ''): Observable<Passages> {
+  callPortionService(passage: string = '', book: string = ''): Observable<Passages> {
     let portionURL: string;
-    if (!passage || !version) {
+    if (!passage || !book) {
       portionURL = this.portionDefault;
     } else {
-      portionURL = `${this.portionService}${passage}&ver=${version}`;
+      portionURL = `${this.portionService}${passage}&look=${book}`;
     }
     return this.http.get<Passages>(portionURL);
   }
 
-  parsePassage(verses: {verse: number, text: string}[]): string {
+  parsePassage(verses: {verse: number, text: string, verseClass: string}[]): string {
     const arrVerses: string[] = [];
 
     if (!verses) {
@@ -116,7 +116,17 @@ export class TextHelperService {
       return;
     }
     verses.forEach((item) => {
-      arrVerses.push(`<strong>${item.verse}</strong> ${item.text}`);
+
+      const virtualItem = document.createElement('div');
+      virtualItem.innerHTML = item.text;
+      const allItems = virtualItem.querySelectorAll('f');
+
+      allItems.forEach( vItem => {
+        vItem.parentNode.removeChild(vItem);
+      });
+
+      const txt = virtualItem.innerText.trim();
+      arrVerses.push(`<strong class=${item.verseClass}>${item.verse}</strong> ${txt}`);
     });
 
     return arrVerses.join(' ');

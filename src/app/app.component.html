@@ -7,8 +7,13 @@
           <span class="search-title">{{ title }}</span><span class="beta">(Beta)</span>
         </div>
         <span>Pasaje: </span>
+        <select class="book-selected" [(ngModel)]="bookselected">
+          <option *ngFor="let item of listBooks" [value]="item.val">{{item.name}}</option>
+        </select>
         <input type="text" [(ngModel)]="titlePortion" class="search-pasaje-txt" />
-        <select class="version" [(ngModel)]="versionPortion">
+
+        <span class="version">(LBLA)</span>
+        <select *ngIf="false" class="version" [(ngModel)]="versionPortion">
           <option [selected]="versionPortion=='bla'" value="bla">LBLA</option>
           <option [selected]="versionPortion=='nvi'" value="nvi">NVI</option>
           <option [selected]="versionPortion=='rvr'" value="rvr">RVR</option>
@@ -30,7 +35,7 @@
         | Fuente: <button (click)="fontUp()">+</button> / <button (click)="fontDown()">-</button>
         - <button (click)="fontReset()">Reiniciar</button>
 
-        <button class="help-button btn btn-primary" (click)="modalService.open(helpContent, { size: 'lg' })">Ayuda</button>
+        <button class="help-button btn btn-primary" (click)="open(helpContent)">Ayuda</button>
       </div>
     </div>
   </div>
@@ -56,18 +61,18 @@
     <div class="modal-body">
       <div>
         <ul>
-          <li><b>Escriba el pasaje</b> que quiere cargar en el campo "Pasaje" en la barra superior (por ejemplo: <i>1 Pedro 2:1-2</i>).</li>
-          <li>Seleccione la <b>versión</b> que desea utilizar. Actualmente se encuentran disponibles 3 versiones: La Biblia de las Américas; Nueva Versión Internacional; Reina Valera.</li>
+          <li><b>Seleccione el libro</b> del pasaje que desea cargar en el editor. En el campo "Pasaje" en la barra superior escriba los versículos (por ejemplo: <i>1:23-2:4</i>).</li>
+          <!-- li>Seleccione la <b>versión</b> que desea utilizar. Actualmente se encuentran disponibles 3 versiones: La Biblia de las Américas; Nueva Versión Internacional; Reina Valera.</li -->
           <li>Presione el botón "Cargar pasaje" para traer la porción al editor.</li>
           <li>Verifique que la <b>función de subrayado</b> esté activa (botón "Iniciar subrayado"/"Detener subrayado").</li>
-          <li>Puede hacer click en los <b>botones de subrayado</b> (click en "Mostrar botones" en caso que no estén visibles) o <b>utilizar los números/letras</b> que aparecen entre paréntesis en cada botón. Por ejemplo para subrayar una palabra relacionada con "Dios", después de seleccionar la palabra puede presionar la tecla "1".</li>
+          <li>Para subrayar texto selecionado puede hacer click en los <b>botones de subrayado</b> (click en "Mostrar botones" en caso que no estén visibles) o <b>utilizar los números/letras</b> que aparecen entre paréntesis en cada botón. Por ejemplo para subrayar una palabra relacionada con "Dios", después de seleccionar la palabra presione la tecla "1".</li>
           <li>Para <b>eliminar un subrayado</b>, con la función de subrayado activa simplemente haga click sobre el texto subrayado.</li>
           <li>A medida que se realice el subrayado es posible <b>visualizar las listas</b> por cada categoría resaltada. Muestre u oculte el panel de listas con el botón "Mostrar/Ocultar panel".</li>
           <li>Cuando pasa el mouse sobre las <b>listas</b> (en el Panel de listas) las palabras relacionadas se destacarán.</li>
           <li>Para modificar el <b>tamaño de la letra</b> utilice los botones "+" y "-". El botón "Reiniciar" establece el tamaño de fuente por defecto.</li>
         </ul>
         <div>
-          <b>Nota sobre almacenamiento:</b> tanto la porción cargada, como la configuración que ustede seleccione para cada función de la aplicación queda almacenada temporalmente solo en el navegador que es utilizado.
+          <b>Nota sobre almacenamiento:</b> El pasaje cargado y la configuración de funciones quedan almacenados temporalmente solo en el navegador utilizado.
         </div>
       </div>
     </div>

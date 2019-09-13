@@ -30,17 +30,25 @@
       <button (click)="tagAs('g')">Causa efecto (g)</button>
     </div>
     <div *ngIf="showListContainer" class="col-4 list-container">
-      <h5>Listas:</h5>
-      <ul><li *ngFor="let key of objectKeys(hightlightList)" class="partition-list">
-        <span
-          class="partition-item-title"
-          (mouseover)="showAllItemList(hightlightList[key])" 
-          (mouseout)="normalAllItemList(hightlightList[key])">
-          "{{getTagName(key)}}"</span>:<span *ngFor="let item of hightlightList[key]" 
-          (mouseover)="showItemList(item.id)" 
-          (mouseout)="normalItemList(item.id)"
-          class="item-list-word">{{item.content}}</span>
-        </li></ul>
+
+      <div *ngIf="objectKeys(hightlightList).length">
+        <h5>Listas:</h5>
+        <ul><li *ngFor="let key of objectKeys(hightlightList)" class="partition-list">
+          <span
+            class="partition-item-title"
+            (mouseover)="showAllItemList(hightlightList[key])" 
+            (mouseout)="normalAllItemList(hightlightList[key])">
+            "{{getTagName(key)}}"</span>:<span *ngFor="let item of hightlightList[key]" 
+            (mouseover)="showItemList(item.id)" 
+            (mouseout)="normalItemList(item.id)"
+            class="item-list-word">{{item.content}}</span>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="!objectKeys(hightlightList).length">
+        No se ha resaltado ninguna parte del texto aun.
+      </div>
+
     </div>
   </div>
 </div>
