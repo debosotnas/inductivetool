@@ -60,9 +60,7 @@ https://meekro.com/quickstart.php
 
 ## Pendings features / fixes:
 ### Soon:
-- Persist data loaded
-- Update 'help' info (break into sections)
-- Show modal with selection of init chapter-verse and end chapter-verse
-- Add load on enter (review if this is ok after add the modal with chapters and verses)
+- issue: with a defined list, change passage. the previous list still is present in panel
+-
 ### Future:
 - 

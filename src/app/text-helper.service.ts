@@ -107,7 +107,7 @@ export class TextHelperService {
     } else {
       portionURL = `${this.portionService}${passage}&look=${book}`;
     }
-    return this.http.get<Passages>(this.portionDefault);
+    return this.http.get<Passages>(portionURL);
   }
 
   parsePassage(verses: {verse: number, text: string, verseClass: string}[]): string {
