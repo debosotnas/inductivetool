@@ -57,4 +57,12 @@ https://meekro.com/quickstart.php
 - LBLA Module: https://www.ph4.org/b4_poisk.php?text=lbla&abbr=0
 - MyBible site: more info about modules: https://mybible.zone/wanted-eng.php
 - MyBible site: format and module details: https://docs.google.com/document/d/12rf4Pqy13qhnAW31uKkaWNTBDTtRbNW0s7cM0vcimlA/edit
+
+## Pendings features / fixes:
+### Soon:
+- Persist data loaded
+- Update 'help' info (break into sections)
+- Show modal with selection of init chapter-verse and end chapter-verse
+- Add load on enter (review if this is ok after add the modal with chapters and verses)
+### Future:
 - 

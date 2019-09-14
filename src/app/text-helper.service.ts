@@ -76,7 +76,8 @@ export class TextHelperService {
         fontSize: 5,
         textPortion: this.parsePassage(passages.passages),
         titlePortion: passages.portion,
-        versionPortion: BibleVersions.LBLA
+        versionPortion: BibleVersions.LBLA,
+        bookToLook: 10
       };
 
     } else {
@@ -98,14 +99,15 @@ export class TextHelperService {
     this.saveData(data);
   }
 
-  callPortionService(passage: string = '', book: string = ''): Observable<Passages> {
+  // 10 = genesis
+  callPortionService(passage: string = '', book: number = 10): Observable<Passages> {
     let portionURL: string;
     if (!passage || !book) {
       portionURL = this.portionDefault;
     } else {
       portionURL = `${this.portionService}${passage}&look=${book}`;
     }
-    return this.http.get<Passages>(portionURL);
+    return this.http.get<Passages>(this.portionDefault);
   }
 
   parsePassage(verses: {verse: number, text: string, verseClass: string}[]): string {

@@ -6,24 +6,29 @@
         <div class="search-title-block">
           <span class="search-title">{{ title }}</span><span class="beta">(Beta)</span>
         </div>
-        <span>Pasaje: </span>
-        <select class="book-selected" [(ngModel)]="bookselected">
-          <option *ngFor="let item of listBooks" [value]="item.val">{{item.name}}</option>
-        </select>
-        <input type="text" [(ngModel)]="titlePortion" class="search-pasaje-txt" />
 
-        <span class="version">(LBLA)</span>
-        <select *ngIf="false" class="version" [(ngModel)]="versionPortion">
-          <option [selected]="versionPortion=='bla'" value="bla">LBLA</option>
-          <option [selected]="versionPortion=='nvi'" value="nvi">NVI</option>
-          <option [selected]="versionPortion=='rvr'" value="rvr">RVR</option>
-        </select>
+        <div class="search-controls-block">
+          <select class="book-selected" [(ngModel)]="bookselected" (ngModelChange)="onChangeBook()">
+            <option *ngFor="let item of listBooks" [selected]="bookselected == item.val" [value]="item.val">{{item.name}}</option>
+          </select>
+          <!-- input type="text" [(ngModel)]="titlePortion" class="search-pasaje-txt" / -->
+          <button class="btn-chap-verse btn" 
+            [ngClass]="{'btn-secondary': !isEmptyPortion, 'btn-primary': isEmptyPortion}"
+            (click)="openSelection(passageContent)">{{titlePortion}}</button>
 
-        <button (click)="loadSimplePortion()">Cargar pasaje</button>
+          <span class="version">(LBLA)</span>
+          <select *ngIf="false" class="version" [(ngModel)]="versionPortion">
+            <option [selected]="versionPortion=='bla'" value="bla">LBLA</option>
+            <option [selected]="versionPortion=='nvi'" value="nvi">NVI</option>
+            <option [selected]="versionPortion=='rvr'" value="rvr">RVR</option>
+          </select>
 
-        <button (click)="startStopHighlight()" [ngClass]="{ 'stop-tool-btn': enableHighLightTool}" class="btn-enable-highlight">
-            {{enableHighLightTool ? 'Detener' : 'Iniciar'}} subrayado
-        </button>
+          <button (click)="startStopHighlight()" [ngClass]="{ 'stop-tool-btn': enableHighLightTool}" class="btn-enable-highlight">
+              {{enableHighLightTool ? 'Detener' : 'Iniciar'}} resaltado
+          </button>
+
+        </div>
+
       </div>
       <div class="col-sm text-right font-size-box">
         <button (click)="showHideHighlight()">
@@ -61,15 +66,35 @@
     <div class="modal-body">
       <div>
         <ul>
-          <li><b>Seleccione el libro</b> del pasaje que desea cargar en el editor. En el campo "Pasaje" en la barra superior escriba los versículos (por ejemplo: <i>1:23-2:4</i>).</li>
-          <!-- li>Seleccione la <b>versión</b> que desea utilizar. Actualmente se encuentran disponibles 3 versiones: La Biblia de las Américas; Nueva Versión Internacional; Reina Valera.</li -->
-          <li>Presione el botón "Cargar pasaje" para traer la porción al editor.</li>
-          <li>Verifique que la <b>función de subrayado</b> esté activa (botón "Iniciar subrayado"/"Detener subrayado").</li>
-          <li>Para subrayar texto selecionado puede hacer click en los <b>botones de subrayado</b> (click en "Mostrar botones" en caso que no estén visibles) o <b>utilizar los números/letras</b> que aparecen entre paréntesis en cada botón. Por ejemplo para subrayar una palabra relacionada con "Dios", después de seleccionar la palabra presione la tecla "1".</li>
-          <li>Para <b>eliminar un subrayado</b>, con la función de subrayado activa simplemente haga click sobre el texto subrayado.</li>
-          <li>A medida que se realice el subrayado es posible <b>visualizar las listas</b> por cada categoría resaltada. Muestre u oculte el panel de listas con el botón "Mostrar/Ocultar panel".</li>
-          <li>Cuando pasa el mouse sobre las <b>listas</b> (en el Panel de listas) las palabras relacionadas se destacarán.</li>
-          <li>Para modificar el <b>tamaño de la letra</b> utilice los botones "+" y "-". El botón "Reiniciar" establece el tamaño de fuente por defecto.</li>
+          <li>Cargar pasajes:
+            <ul>
+              <li><b>Seleccione el libro</b> del pasaje y haga click en el botón junto al nombre del libro.</li>
+              <li>En la ventana que se presenta, seleccione primero el capítulo y luego los versículos que desea mostrar.</li>
+              <!-- li>Seleccione la <b>versión</b> que desea utilizar. Actualmente se encuentran disponibles 3 versiones: La Biblia de las Américas; Nueva Versión Internacional; Reina Valera.</li -->
+              <li>Presione el botón "Cargar pasaje" para traer la porción al editor.</li>
+            </ul>
+          </li>
+
+          <li>Resaltar palabras o frases:
+            <ul>
+              <li>Verifique que la <b>función de resaltado</b> esté activa (botón "Iniciar resaltado"/"Detener resaltado").</li>
+              <li>Para subrayar texto selecionado puede hacer click en los <b>botones de resaltado</b> (click en "Mostrar botones" en caso que no estén visibles) o <b>utilizar los números/letras</b> que aparecen entre paréntesis en cada botón. Por ejemplo para subrayar una palabra relacionada con "Dios", después de seleccionar la palabra presione la tecla "1".</li>
+              <li>Para <b>eliminar un resaltado</b>, con la función de resaltado activa simplemente haga click sobre el texto resaltado.</li>
+            </ul>
+          </li>
+  
+          <li>Listas:
+            <ul>
+              <li>A medida que se realice el resaltado es posible <b>visualizar las listas</b> por cada categoría resaltada. Muestre u oculte el panel de listas con el botón "Mostrar/Ocultar panel".</li>
+              <li>Cuando pasa el mouse sobre las <b>listas</b> (en el Panel de listas) las palabras relacionadas se destacarán.</li>
+            </ul>
+          </li>
+
+          <li>+Info:
+            <ul>
+              <li>Para modificar el <b>tamaño de la letra</b> utilice los botones "+" y "-". El botón "Reiniciar" establece el tamaño de fuente por defecto.</li>
+            </ul>
+          </li>
         </ul>
         <div>
           <b>Nota sobre almacenamiento:</b> El pasaje cargado y la configuración de funciones quedan almacenados temporalmente solo en el navegador utilizado.
@@ -81,42 +106,43 @@
     </div>
 </ng-template>
 
-<ng-template #longContent let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title">Modal title</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<ng-template #passageContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Seleccionar versículos para '{{getBookName()}}'</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="list-of-chapters">
+        <b>Capítulos:</b>
+        <div class="chapters">
+          <button [ngClass]="{'btn-outline-info': currentChapterHighlight != chapterSelected, 'btn-info': currentChapterHighlight == chapterSelected}"
+                *ngFor="let chapterSelected of objectKeys(currentBookVersesSelection)"
+                (click)="showVersesOfChapter(currentBookVersesSelection[chapterSelected], chapterSelected)"
+                class="btn chapter">{{chapterSelected}}</button>
+        </div>
+        <hr />
+        <div *ngIf="currentVerses" class="verses">
+          <b>Versículos:</b> <span class="extra-info"> (<b>Click</b> para seleccionar un versículo. <b>Arrastrar</b> para seleccionar dos o más versículos)</span>
+          <div>
+            <button [ngClass]="{'btn-outline-info': !currentVerseHighlight[i+1], 'btn-info': currentVerseHighlight[i+1]}"
+                  *ngFor="let item of arrayOne(currentVerses); let i = index;"
+                  (mousedown)="selectIniVerses(i+1)"
+                  (mouseover)="showDragButtons(i+1)"
+                  (mouseup)="selectEndVerses(i+1)"
+                  class="btn verse">{{i+1}}</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="modal-body">
-        <ngb-tabset>
-            <ngb-tab>
-              <ng-template ngbTabTitle>Antiguo Testamento</ng-template>
-              <ng-template ngbTabContent>
-                <div *ngFor="let book of allBooks.at">
-                    <span>{{book.name}}</span>: 
-                    <button
-                      *ngFor="let item of arrayOne(book.c); let i = index"
-                      (click)="selectBookChap(book.f ? book.f : book.name, i+1)"
-                    >{{i+1}}</button>
-                </div>
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab>
-              <ng-template ngbTabTitle>Nuevo Testamento</ng-template>
-              <ng-template ngbTabContent>
-                  <div *ngFor="let book of allBooks.nt">
-                      <span>{{book.name}}</span>: 
-                      <button
-                        *ngFor="let item of arrayOne(book.c); let i = index"
-                        (click)="selectBookChap(book.f ? book.f : book.name, i+1)"
-                      >{{i+1}}</button>
-                  </div>
-              </ng-template>
-            </ngb-tab>
-          </ngb-tabset>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
-    </div>
-  </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancelar</button>
+    <button type="button"
+        class="btn btn-success"
+        (click)="updateAndLoadPortion(); modal.close()"
+        [disabled]="!currentPortionToBeLoaded">Cargar pasaje</button>
+  </div>
+</ng-template>

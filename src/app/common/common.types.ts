@@ -23,6 +23,7 @@ export interface State {
   textPortion: string;
   titlePortion: string;
   versionPortion: string;
+  bookToLook: number;
 }
 
 export interface Passages {
