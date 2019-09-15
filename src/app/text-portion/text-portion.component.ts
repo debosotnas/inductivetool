@@ -27,6 +27,7 @@ export class TextPortionComponent implements OnInit {
   @Input() fontSizeSelected: number;
   @Input() hightlightList = {};
 
+  currentSelection: any;
   currentRangeSelection: Range;
   words: string[];
 
@@ -81,9 +82,75 @@ export class TextPortionComponent implements OnInit {
       return;
     }
 
+
     if (this.currentRangeSelection && this.currentRangeSelection.surroundContents) {
 
-      let parentNode: HTMLSpanElement;
+      const arrNodes = this.getNodesToTag();
+
+// how to tag every selected parent tag
+// var sss = window.getSelection()
+// sss.anchorNode.parentNode === sss.anchorNode.parentNode
+// sss.anchorNode.parentNode === sss.focusNode.parentNode
+// sss.anchorNode.parentElement === sss.anchorNode.parentElement
+// sss.anchorNode.parentElement === sss.focusNode.parentElement
+// var tmp = sss.anchorNode.parentElement.nextElementSibling
+// sss.focusNode.parentElement === tmp
+// tmp = tmp.nextElementSibling
+// sss.focusNode.parentElement === tmp
+// tmp = tmp.nextElementSibling
+// sss.focusNode.parentElement === tmp
+//
+      // let parentNode: HTMLSpanElement;
+      arrNodes.forEach((nodeToTag: HTMLElement, ) => {
+        const localParentNode: HTMLSpanElement = document.createElement('span');
+        const currNodes: NodeList = nodeToTag.childNodes;
+        currNodes.forEach(item => localParentNode.appendChild(item));
+
+/*
+        if (typeOfTag === '18') { // for special type of 'key words'
+
+          const localParentNode8: HTMLSpanElement = document.createElement('span');
+          localParentNode8.setAttribute('class', 'extra-hl8');
+          const currNodes8: NodeList = localParentNode.childNodes;
+          currNodes8.forEach(item => localParentNode8.appendChild(item));
+
+          // const extraNode = document.createElement('span');
+          // extraNode.setAttribute('class', 'extra-hl8');
+          // this.currentRangeSelection.surroundContents(extraNode);
+
+        }
+*/
+        const tmpId = 'id' + (new Date()).getTime() + Math.ceil(Math.random() * 1000);
+        localParentNode.setAttribute('class', (CLASS_CSS_PREFIX + typeOfTag) + ' ' + HIGHLIGHT_COMMON_CLASS + ' ' + tmpId);
+
+        // parentNode = document.createElement('span');
+
+        // const tmpId = 'id' + (new Date()).getTime() + Math.ceil(Math.random() * 1000);
+        // parentNode.setAttribute('class', (CLASS_CSS_PREFIX + typeOfTag) + ' ' + HIGHLIGHT_COMMON_CLASS + ' ' + tmpId);
+
+        nodeToTag.appendChild(localParentNode);
+
+        if (typeOfTag === '8') { // for special type of 'key words'
+
+          const localParentNode8: HTMLSpanElement = document.createElement('span');
+          localParentNode8.setAttribute('class', 'extra-hl8');
+          const currNodes8: NodeList = localParentNode.childNodes;
+          currNodes8.forEach(item => localParentNode8.appendChild(item));
+
+          // const extraNode = document.createElement('span');
+          // extraNode.setAttribute('class', 'extra-hl8');
+          // this.currentRangeSelection.surroundContents(extraNode);
+          localParentNode.appendChild(localParentNode8);
+        }
+
+      });
+
+      // eee.childNodes.forEach(item => iii.appendChild(item));
+
+
+      // let parentNode: HTMLSpanElement;
+
+      /*
 
       if (typeOfTag === '8') { // for special type of 'key words'
         const extraNode = document.createElement('span');
@@ -97,9 +164,31 @@ export class TextPortionComponent implements OnInit {
       parentNode.setAttribute('class', (CLASS_CSS_PREFIX + typeOfTag) + ' ' + HIGHLIGHT_COMMON_CLASS + ' ' + tmpId);
 
       this.currentRangeSelection.surroundContents(parentNode);
+
+      */
+
       document.getSelection().empty();
       this.emitShowLists();
     }
+  }
+
+  private getNodesToTag(): Array<any> {
+    const arrNodes = [];
+    if (this.currentSelection) {
+      const anchorNode = this.currentSelection.anchorNode;
+      const focusNode = this.currentSelection.focusNode;
+      arrNodes.push(anchorNode.parentElement);
+      if (anchorNode.parentElement !== focusNode.parentElement) {
+        let tmpNode = anchorNode.parentElement.nextElementSibling;
+        arrNodes.push(tmpNode);
+        while (tmpNode !== focusNode.parentElement && tmpNode.nextElementSibling) {
+          tmpNode = tmpNode.nextElementSibling;
+          arrNodes.push(tmpNode);
+        }
+      }
+      // console.log('--->>>: %o', arrNodes);
+    }
+    return arrNodes;
   }
 
   isValidTag(typeOfTag: any): boolean {
@@ -115,7 +204,7 @@ export class TextPortionComponent implements OnInit {
     console.log('Host Rectangle:', event.hostRectangle);
     console.groupEnd();
     */
-
+    this.currentSelection = event.selection;
     this.currentRangeSelection = event.rangeSelection;
     /*
     // If a new selection has been created, the viewport and host rectangles will

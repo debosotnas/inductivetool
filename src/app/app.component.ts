@@ -51,12 +51,10 @@ export class AppComponent implements OnInit {
   // --------
 
   // allBooks = BooksWithChapters; // not used
-
   constructor(rend: Renderer2,
               private textHelperService: TextHelperService,
               private modalService: NgbModal) {
     this.renderer = rend;
-    // this.setupInitialData();
   }
 
   getBookName(): string {
@@ -270,7 +268,7 @@ export class AppComponent implements OnInit {
     this.currentFontSize = this.initialData.fontSize;
     this.versionPortion = this.initialData.versionPortion;
     this.bookselected = this.initialData.bookToLook;
-    this.enableHighLightTool = this.textHelperService.enableHighLightTool;
+    this.enableHighLightTool = this.initialData.enableHighLightTool;
 
     this.initPortionText = this.initialData.textPortion;
     this.titlePortion = this.initialData.titlePortion;
@@ -319,13 +317,14 @@ export class AppComponent implements OnInit {
     });
     this.renderer.listen('document', 'click', (event: MouseEvent) => {
       const target: HTMLElement = event.target as HTMLElement;
-      if (!target.classList.contains(HIGHLIGHT_COMMON_CLASS) || !this.textHelperService.enableHighLightTool) {
+      if (!target.classList.contains(HIGHLIGHT_COMMON_CLASS) || !this.enableHighLightTool) {
         return;
       }
       target.outerHTML = target.innerHTML;
       this.showCurrentLists({ text: document.querySelector('.block-portion').innerHTML});
     });
     this.hightlightList = this.textHelperService.getHighLightList(this.initialData.textPortion);
+    this.updateStructureForPhrasing();
   }
 
   showCurrentLists(event: ShowListEvent) {
@@ -384,8 +383,24 @@ export class AppComponent implements OnInit {
   }
 
   startStopHighlight(): void {
-    this.textHelperService.enableHighLightTool = !this.textHelperService.enableHighLightTool;
-    this.enableHighLightTool = this.textHelperService.enableHighLightTool;
+    this.enableHighLightTool = !this.enableHighLightTool;
+    this.persistEnabledHighlight();
+
+    this.updateStructureForPhrasing();
+  }
+
+  updateStructureForPhrasing() {
+    if (this.enableHighLightTool) {
+
+    } else {
+
+    }
+  }
+
+  persistEnabledHighlight() {
+    const data: State = this.textHelperService.getData();
+    data.enableHighLightTool = this.enableHighLightTool;
+    this.textHelperService.saveData(data);
   }
 
 }

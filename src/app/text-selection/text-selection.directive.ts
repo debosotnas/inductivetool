@@ -26,6 +26,7 @@ import { NgZone } from '@angular/core';
 // ----------------------------------------------------------------------------------- //
 
 export interface TextSelectEvent {
+  selection: any;
   text: string;
   rangeSelection: Range | null;
   viewportRectangle: SelectionRectangle | null;
@@ -176,6 +177,7 @@ export class TextSelectionDirective implements OnInit, OnDestroy {
       this.zone.runGuarded(() => {
         this.hasSelection = false;
         this.textSelectEvent.next({
+          selection: null,
           text: '',
           rangeSelection: null,
           viewportRectangle: null,
@@ -211,6 +213,7 @@ export class TextSelectionDirective implements OnInit, OnDestroy {
       this.zone.runGuarded(() => {
         this.hasSelection = true;
         this.textSelectEvent.emit({
+          selection,
           text: selection.toString(),
           rangeSelection: range,
           viewportRectangle: {

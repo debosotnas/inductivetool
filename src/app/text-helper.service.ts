@@ -14,7 +14,6 @@ export class TextHelperService {
   portionDefault = 'assets/test-portion.json';
   portionService = 'svc/getverses.php?portion=';
   state: State;
-  enableHighLightTool = true;
 
   constructor(private http: HttpClient) {
     // TextHelperService.http = http;
@@ -77,7 +76,8 @@ export class TextHelperService {
         textPortion: this.parsePassage(passages.passages),
         titlePortion: passages.portion,
         versionPortion: BibleVersions.LBLA,
-        bookToLook: 10
+        bookToLook: 10,
+        enableHighLightTool: true
       };
 
     } else {
@@ -107,7 +107,8 @@ export class TextHelperService {
     } else {
       portionURL = `${this.portionService}${passage}&look=${book}`;
     }
-    return this.http.get<Passages>(portionURL);
+    // return this.http.get<Passages>(portionURL); // PROD conf
+    return this.http.get<Passages>(this.portionDefault);
   }
 
   parsePassage(verses: {verse: number, text: string, verseClass: string}[]): string {
@@ -127,8 +128,11 @@ export class TextHelperService {
         vItem.parentNode.removeChild(vItem);
       });
 
-      const txt = virtualItem.innerText.trim();
-      arrVerses.push(`<strong class=${item.verseClass}>${item.verse}</strong> ${txt}`);
+      const txt = virtualItem.innerText.trim().split(' ').map((w) => {
+        return `<span class="single-word">${w}</span>`;
+      }).join(' ');
+      arrVerses.push(`<span class=${item.verseClass}>${item.verse}</span> ${txt}`);
+      // arrVerses.push(`<span class="single-word"><strong class=${item.verseClass}>${item.verse}</strong></span> ${txt}`);
     });
 
     return arrVerses.join(' ');

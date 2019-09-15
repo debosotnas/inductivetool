@@ -63,4 +63,8 @@ https://meekro.com/quickstart.php
 - issue: with a defined list, change passage. the previous list still is present in panel
 -
 ### Future:
-- 
+- add notes (something like "select and create stick")
+- add draw capabilities (free hand draw over text)
+
+## Next stepts:
+- phrase editor

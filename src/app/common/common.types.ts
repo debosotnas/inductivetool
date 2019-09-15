@@ -24,6 +24,7 @@ export interface State {
   titlePortion: string;
   versionPortion: string;
   bookToLook: number;
+  enableHighLightTool: boolean;
 }
 
 export interface Passages {
